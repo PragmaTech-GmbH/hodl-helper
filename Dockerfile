@@ -9,6 +9,7 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy the static website files into the Nginx web root
 COPY index.html /usr/share/nginx/html/
+COPY script.js /usr/share/nginx/html/
 
 # Expose port 8080 (the port Nginx will listen on inside the container)
 EXPOSE 8080
