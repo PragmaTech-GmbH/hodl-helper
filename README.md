@@ -1,7 +1,7 @@
 # hodl-helper
 
 Statische, mobil optimierte Seite (Vanilla JS, kein Backend) mit Kursen und Performance.
-Oben wählen vier Buttons die Ansicht: **Aktuell** (Preis), **7 T**, **4 W**, **YTD** (Veränderung in %).
+Oben wählen fünf Buttons die Ansicht: **Aktuell** (Preis), **Heute** (seit Vortagesschluss), **7 T**, **4 W**, **YTD** (Veränderung in %).
 
 | Kachel | Quelle | Hinweis |
 |---|---|---|

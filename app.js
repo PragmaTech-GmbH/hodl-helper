@@ -42,7 +42,7 @@ const TILES = [
   { name: 'Euro Stoxx 50', unit: 'Index · Punkte', logo: LOGOS.stoxx, load: () => onvistaQuote('indices', 'EU0009658145') },
 ];
 
-const VIEW_LABELS = { w1: '7 Tagen', w4: '4 Wochen', ytd: 'Jahresbeginn' };
+const VIEW_LABELS = { d1: 'gestern', w1: '7 Tagen', w4: '4 Wochen', ytd: 'Jahresbeginn' };
 
 async function getJson(url) {
   const response = await fetch(url);
@@ -71,10 +71,13 @@ async function coinQuote(id, currency) {
   // Daily points sit at 00:00 UTC; the last point is the live price.
   const [updated, current] = prices.at(-1);
   const startOfYear = Date.UTC(new Date(updated).getUTCFullYear(), 0, 1);
+  // Today's 00:00 UTC point is the previous day's close.
+  const startOfDay = updated - (updated % DAY);
   return {
     currency: currency.toUpperCase(),
     current,
     updated,
+    d1: change(current, priceAt(prices, startOfDay)),
     w1: change(current, priceAt(prices, updated - 7 * DAY)),
     w4: change(current, priceAt(prices, updated - 28 * DAY)),
     ytd: change(current, priceAt(prices, startOfYear)),
@@ -88,6 +91,7 @@ async function onvistaQuote(kind, isin) {
     currency: kind === 'indices' ? null : quote.isoCurrency,
     current: quote.last,
     updated: Date.parse(quote.datetimeLast),
+    d1: quote.performancePct, // change against the previous close (quote.previousLast)
     w1: cnPerformance.performanceRelW1,
     w4: cnPerformance.performanceRelW4,
     ytd: cnPerformance.performanceRelCy,
