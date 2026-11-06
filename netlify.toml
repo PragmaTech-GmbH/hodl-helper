@@ -1,0 +1,12 @@
+# The page lives at the repository root and is served as-is (no build).
+[build]
+  publish = "."
+  command = ""
+
+# Security headers carried over from the former nginx.conf (Fly.io deployment).
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

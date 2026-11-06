@@ -1,0 +1,95 @@
+:root {
+  --bg: #0f1115;
+  --card: #181b22;
+  --border: #262a33;
+  --text: #e6e8ec;
+  --muted: #8b919c;
+  --accent: #e6e8ec;
+  --up: #2fbf71;
+  --down: #e5534b;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 0 .75rem calc(1.5rem + env(safe-area-inset-bottom));
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+header, main, footer { max-width: 640px; margin: 0 auto; }
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: calc(.75rem + env(safe-area-inset-top)) 0 .75rem;
+  background: var(--bg);
+}
+
+.views {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  padding: 4px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.views button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.views button[aria-selected="true"] { background: var(--accent); color: var(--bg); }
+
+main {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .75rem;
+}
+
+.tile {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: .9rem;
+  min-height: 130px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tile-head { display: flex; align-items: center; gap: .55rem; margin-bottom: .8rem; }
+.tile-head svg { width: 32px; height: 32px; flex: none; }
+.tile-name { font-weight: 600; font-size: .95rem; line-height: 1.2; }
+.tile-unit { color: var(--muted); font-size: .75rem; }
+
+.value {
+  margin-top: auto;
+  font-size: clamp(1.25rem, 6vw, 1.75rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.detail { color: var(--muted); font-size: .75rem; margin-top: .2rem; font-variant-numeric: tabular-nums; }
+
+.up { color: var(--up); }
+.down { color: var(--down); }
+.error { color: var(--down); font-size: .85rem; margin-top: auto; }
+.loading { color: var(--muted); }
+
+footer { margin-top: 1.5rem; color: var(--muted); font-size: .75rem; }
+footer p { margin: .4rem 0; }
+footer a { color: inherit; }
