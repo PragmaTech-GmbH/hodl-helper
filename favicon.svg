@@ -15,8 +15,22 @@
   <path fill="#e6f7ff" d="M136 30l3 9 9 3-9 3-3 9-3-9-9-3 9-3z"/>
   <path fill="#e6f7ff" opacity=".7" d="M44 42l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/>
 
+  <!-- hands like 🤲🏻: palms facing the viewer, fingers up; left drawn, right mirrored -->
+  <g id="left" transform="rotate(-4 88 180)" stroke="#a8694a" stroke-width="2" stroke-linejoin="round">
+    <g fill="#f9dcc4">
+      <rect x="24" y="130" width="15" height="42" rx="7.5" transform="rotate(-22 37 168)"/>
+      <rect x="33" y="104" width="13.5" height="52" rx="6.75"/>
+      <rect x="46.5" y="96" width="13.5" height="60" rx="6.75"/>
+      <rect x="60" y="100" width="13.5" height="56" rx="6.75"/>
+      <rect x="73.5" y="110" width="13.5" height="46" rx="6.75"/>
+      <path stroke="none" d="M33 136H87V184H26L29 160z"/>
+    </g>
+    <path fill="none" stroke-linecap="round" d="M87 120v64"/>
+    <path fill="none" stroke="#e3b496" stroke-width="2.5" stroke-linecap="round" d="M44 160c8 6 20 8 34 4"/>
+  </g>
+  <use href="#left" transform="translate(180 0) scale(-1 1)"/>
   <!-- diamond -->
-  <g stroke="#0f1115" stroke-width="1.5" stroke-linejoin="round">
+  <g transform="translate(90 128) scale(.86) translate(-90 -126)" stroke="#0f1115" stroke-width="1.5" stroke-linejoin="round">
     <path fill="#b8ecff" d="M64 46h52l18 22H46z"/>
     <path fill="#7fd3ff" d="M46 68h88l-44 58z"/>
     <path fill="#e6f7ff" d="M78 46l-8 22h40l-8-22z"/>
@@ -25,10 +39,4 @@
     <path fill="none" d="M64 46l6 22M116 46l-6 22"/>
   </g>
 
-  <!-- hands: left drawn, right mirrored -->
-  <g id="left" fill="url(#hand)" stroke="#9a5208" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M-4 180V150c10-16 22-26 38-30l12-3c3-10 2-22 0-32-1-6 7-9 10-3 6 11 10 25 11 40l10 10c5 2 5 9 0 10l-4 1c5 2 5 9 0 10l-6 1c4 3 2 9-3 9l-8 1c3 3 0 8-4 8H48l-18 19z"/>
-    <path fill="none" d="M57 127c-4 4-9 6-14 6"/>
-  </g>
-  <use href="#left" transform="translate(180 0) scale(-1 1)"/>
 </svg>

@@ -1,8 +1,8 @@
 ## ADDED Requirements
 
 ### Requirement: Home screen icon and favicon
-The page SHALL declare a "Diamond Hands" icon (a light-blue diamond held by two Bitcoin-orange hands
-on the dark page background):
+The page SHALL declare a "Diamond Hands" icon (a light-blue diamond resting in two open palms, drawn
+like the 🤲🏻 emoji with a light skin tone, on the dark page background):
 - `apple-touch-icon.png`, 180 × 180 px, opaque (no transparency, since iOS fills transparent areas
   black and rounds the corners itself)
 - `favicon.svg` for browsers with SVG favicon support, `favicon-32.png` as fallback
