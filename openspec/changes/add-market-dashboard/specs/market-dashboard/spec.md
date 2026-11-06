@@ -1,7 +1,7 @@
 ## ADDED Requirements
 
 ### Requirement: Asset tiles
-The page SHALL show exactly five tiles in this order, each with a logo, a name and a subtitle:
+The page SHALL show exactly eight tiles in this order, each with a logo, a name and a subtitle:
 
 | # | Name | Subtitle | Logo | Currency |
 |---|---|---|---|---|
@@ -10,12 +10,15 @@ The page SHALL show exactly five tiles in this order, each with a logo, a name a
 | 3 | Gold | 1 Feinunze · EUR | gold circle with "Au" | EUR |
 | 4 | Silber | 1 Feinunze · EUR | silver circle with "Ag" | EUR |
 | 5 | All-World | Vanguard · EUR | globe icon, dark red circle | EUR |
+| 6 | DAX | Index · Punkte | circle in black, red, gold bands | points |
+| 7 | S&P 500 | Index · Punkte | dark blue circle with "500" | points |
+| 8 | Euro Stoxx 50 | Index · Punkte | blue circle with a ring of 12 yellow dots | points |
 
 Logos SHALL be inline SVG (no external image requests, no third-party trademark files).
 
 #### Scenario: Page load
 - **WHEN** the page is opened
-- **THEN** five tiles are shown immediately with logo, name, subtitle and a loading placeholder ("…")
+- **THEN** eight tiles are shown immediately with logo, name, subtitle and a loading placeholder ("…")
 - **AND** the placeholders are replaced once the data has loaded
 
 ### Requirement: View switcher
@@ -26,7 +29,8 @@ tiles for that view without fetching data again. Buttons SHALL use `role="tab"` 
 #### Scenario: Current view
 - **WHEN** "Aktuell" is selected
 - **THEN** each tile shows the current price in its currency (de-DE, e.g. `67.134 €`, `75.388 $`,
-  `46,01 €`; no decimals at or above 1000, two decimals below)
+  `46,01 €`; no decimals at or above 1000, two decimals below); index levels as plain numbers without
+  a currency symbol (e.g. `25.980`)
 - **AND** a small line "Stand <dd.mm.yy, hh:mm>" with the quote's timestamp
 
 #### Scenario: Period view
@@ -47,7 +51,7 @@ reference is the last daily history price at or before:
 - 4 W: current timestamp minus 28 days
 - YTD: 1 January 00:00 UTC of the current year (the previous year's closing price)
 
-For the ETF the page SHALL use the precomputed percentages from the onvista snapshot.
+For the ETF and the indices the page SHALL use the precomputed percentages from the onvista snapshot.
 
 #### Scenario: Year to date
 - **WHEN** the current date is 2026-11-06 and the history contains a price for 2026-01-01T00:00Z
@@ -60,6 +64,9 @@ The page SHALL load data in the browser, without a backend or API keys, from:
 - Gold: CoinGecko `coins/pax-gold/market_chart?vs_currency=eur&days=365&interval=daily`
 - Silver: CoinGecko `coins/kinesis-silver/market_chart?vs_currency=eur&days=365&interval=daily`
 - ETF: onvista `funds/ISIN:IE00BK5BQT80/snapshot`
+- DAX: onvista `indices/ISIN:DE0008469008/snapshot`
+- S&P 500: onvista `indices/ISIN:US78378X1072/snapshot`
+- EURO STOXX 50: onvista `indices/ISIN:EU0009658145/snapshot`
 
 The page SHALL NOT call the onvista price-history endpoint.
 
@@ -83,11 +90,11 @@ inside a tile.
 
 #### Scenario: iPhone-sized viewport
 - **WHEN** the page is shown at 390 × 844 px
-- **THEN** tiles appear in a 2-column grid (fifth tile alone in the last row) without horizontal
+- **THEN** tiles appear in a 2-column grid (four rows of two) without horizontal
   scrolling, and tile names and subtitles fit on one line each
 
 ### Requirement: Attribution
-The footer SHALL link CoinGecko and onvista, state that gold and silver are tracked via PAXG and KAG
+The footer SHALL link CoinGecko and onvista (ETF and indices), state that gold and silver are tracked via PAXG and KAG
 (1 troy ounce each), and say "Keine Anlageberatung".
 
 #### Scenario: Footer

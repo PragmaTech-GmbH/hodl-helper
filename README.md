@@ -9,6 +9,7 @@ Oben wählen vier Buttons die Ansicht: **Aktuell** (Preis), **7 T**, **4 W**, **
 | Gold (EUR, 1 oz) | CoinGecko, Token PAX Gold (PAXG) | 1 Token = 1 Feinunze, weicht minimal vom Spotpreis ab |
 | Silber (EUR, 1 oz) | CoinGecko, Token Kinesis Silver (KAG) | 1 Token = 1 Feinunze, weicht minimal vom Spotpreis ab |
 | Vanguard FTSE All-World (VWCE) | onvista Snapshot-API | Performance von onvista vorberechnet |
+| DAX, S&P 500, Euro Stoxx 50 | onvista Snapshot-API | Stand in Punkten; außerhalb der Handelszeiten Indikation der Banken |
 
 Beide APIs senden `Access-Control-Allow-Origin: *`, der Browser ruft sie direkt auf.
 Aktualisierung alle 5 Minuten und beim Zurückkehren in den Tab.

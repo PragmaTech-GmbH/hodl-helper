@@ -3,7 +3,8 @@
 ## Purpose
 hodl-helper is a public, static, mobile-first web page that shows current prices and recent
 performance for a small personal watchlist: Bitcoin (USD and EUR), gold and silver (EUR per troy
-ounce) and the Vanguard FTSE All-World UCITS ETF (EUR). It is deployed to Netlify.
+ounce), the Vanguard FTSE All-World UCITS ETF (EUR) and the DAX, S&P 500 and EURO STOXX 50 indices
+(points). It is deployed to Netlify.
 
 ## Tech Stack
 - Plain HTML, CSS and vanilla JavaScript (ES2022). No framework, no bundler, no build step, no npm
@@ -41,7 +42,7 @@ ounce) and the Vanguard FTSE All-World UCITS ETF (EUR). It is deployed to Netlif
 ## Important Constraints
 - Must work without a backend and without secrets (repository is public).
 - CoinGecko public API: no key, history limited to the last 365 days, rate limit of a few requests per
-  minute. Keep requests per refresh small (currently 4), refresh no more than every 5 minutes.
+  minute. Keep CoinGecko requests per refresh small (currently 4), refresh no more than every 5 minutes.
 - onvista's API is undocumented and may change. Its terms restrict content usage; the price-history
   endpoint returns HTTP 403 and must not be used. Only the snapshot endpoint is used. Acceptable for a
   personal dashboard; the page credits onvista and states "Keine Anlageberatung".

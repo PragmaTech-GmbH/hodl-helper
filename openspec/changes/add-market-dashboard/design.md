@@ -13,6 +13,7 @@ on 2026-11-06 and send `Access-Control-Allow-Origin: *`.
 | Gold | CoinGecko `pax-gold` (PAXG, 1 token = 1 oz) | No free keyless CORS spot-metal API with history |
 | Silver | CoinGecko `kinesis-silver` (KAG, 1 token = 1 oz) | Same as gold |
 | ETF | onvista `GET https://api.onvista.de/api/v1/funds/ISIN:IE00BK5BQT80/snapshot` | Yahoo/Stooq have no CORS or block bots |
+| DAX, S&P 500, EURO STOXX 50 | onvista `GET .../indices/ISIN:<isin>/snapshot` (`DE0008469008`, `US78378X1072`, `EU0009658145`) | Same endpoint shape and performance fields as the ETF; checked 2026-11-06 |
 
 Rejected alternatives:
 - Yahoo Finance chart API: no CORS, HTTP 429.
@@ -29,7 +30,7 @@ CoinGecko `market_chart` returns `{ "prices": [[timestampMs, price], ...] }`, as
 current price and timestamp, so no extra `simple/price` call is needed (4 CoinGecko requests per
 refresh).
 
-onvista snapshot fields:
+onvista snapshot fields (same for `funds` and `indices`):
 - `quote.last` — current price
 - `quote.isoCurrency` — `"EUR"`
 - `quote.datetimeLast` — ISO timestamp
@@ -39,11 +40,15 @@ onvista snapshot fields:
 
 onvista only provides 4 weeks (not 31 days), so "4 W" = 28 days for all assets.
 
+Index snapshots report `isoCurrency` (EUR or USD), but an index level is in points, so index quotes are
+normalized with `currency: null` and formatted as a plain number. Outside trading hours onvista returns
+an indicative quote from a bank (e.g. "UBS Indikation"); the timestamp shows its time.
+
 ### Normalized quote
 ```js
 { currency: 'EUR', current: 67134.2, updated: 1793951706323, w1: -3.2, w4: -11.8, ytd: -9.92 }
 ```
-`w1`, `w4`, `ytd` are percentages or `null`.
+`w1`, `w4`, `ytd` are percentages or `null`. `currency` is `null` for indices (points).
 
 ### Calculation helpers
 ```js
@@ -83,7 +88,7 @@ Optional: `[[headers]]` with a short `Cache-Control` for JS/CSS and a `Content-S
 ## Risks / Trade-offs
 - CoinGecko rate limit (HTTP 429) on frequent reloads or shared IPs → tile shows an error until the
   next refresh.
-- onvista may change or block the snapshot endpoint → only the ETF tile breaks.
+- onvista may change or block the snapshot endpoint → the ETF and index tiles break, the CoinGecko tiles keep working.
 - Token prices (PAXG, KAG) can deviate slightly from spot.
 - CoinGecko public history is capped at 365 days; YTD always fits.
 

@@ -1,7 +1,7 @@
 'use strict';
 
 const COINGECKO = 'https://api.coingecko.com/api/v3';
-const ONVISTA_ETF = 'https://api.onvista.de/api/v1/funds/ISIN:IE00BK5BQT80/snapshot';
+const ONVISTA = 'https://api.onvista.de/api/v1';
 const DAY = 24 * 60 * 60 * 1000;
 const REFRESH_MS = 5 * 60 * 1000;
 
@@ -19,6 +19,16 @@ const LOGOS = {
   world: `<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#96151d"/>
     <g fill="none" stroke="#fff" stroke-width="1.6"><circle cx="16" cy="16" r="9"/><ellipse cx="16" cy="16" rx="4" ry="9"/>
     <path d="M7 16h18M8.5 11.5h15M8.5 20.5h15"/></g></svg>`,
+  dax: `<svg viewBox="0 0 32 32" aria-hidden="true"><clipPath id="de"><circle cx="16" cy="16" r="16"/></clipPath>
+    <g clip-path="url(#de)"><path fill="#1a1a1a" d="M0 0h32v11H0z"/><path fill="#dd0000" d="M0 11h32v10H0z"/>
+    <path fill="#ffce00" d="M0 21h32v11H0z"/></g></svg>`,
+  spx: `<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#1f3c88"/>
+    <text x="16" y="20.5" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="system-ui, sans-serif">500</text></svg>`,
+  stoxx: `<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#003399"/>
+    <g fill="#ffcc00">${Array.from({ length: 12 }, (_, i) => {
+      const a = (i * Math.PI) / 6;
+      return `<circle cx="${(16 + 9 * Math.sin(a)).toFixed(2)}" cy="${(16 - 9 * Math.cos(a)).toFixed(2)}" r="1.5"/>`;
+    }).join('')}</g></svg>`,
 };
 
 const TILES = [
@@ -26,7 +36,10 @@ const TILES = [
   { name: 'Bitcoin', unit: 'in EUR', logo: LOGOS.btc, load: () => coinQuote('bitcoin', 'eur') },
   { name: 'Gold', unit: '1 Feinunze · EUR', logo: LOGOS.gold, load: () => coinQuote('pax-gold', 'eur') },
   { name: 'Silber', unit: '1 Feinunze · EUR', logo: LOGOS.silver, load: () => coinQuote('kinesis-silver', 'eur') },
-  { name: 'All-World', unit: 'Vanguard · EUR', logo: LOGOS.world, load: etfQuote },
+  { name: 'All-World', unit: 'Vanguard · EUR', logo: LOGOS.world, load: () => onvistaQuote('funds', 'IE00BK5BQT80') },
+  { name: 'DAX', unit: 'Index · Punkte', logo: LOGOS.dax, load: () => onvistaQuote('indices', 'DE0008469008') },
+  { name: 'S&amp;P 500', unit: 'Index · Punkte', logo: LOGOS.spx, load: () => onvistaQuote('indices', 'US78378X1072') },
+  { name: 'Euro Stoxx 50', unit: 'Index · Punkte', logo: LOGOS.stoxx, load: () => onvistaQuote('indices', 'EU0009658145') },
 ];
 
 const VIEW_LABELS = { w1: '7 Tagen', w4: '4 Wochen', ytd: 'Jahresbeginn' };
@@ -68,10 +81,11 @@ async function coinQuote(id, currency) {
   };
 }
 
-async function etfQuote() {
-  const { quote, cnPerformance } = await getJson(ONVISTA_ETF);
+// kind is the onvista instrument type ('funds', 'indices'); index levels are points, not a currency.
+async function onvistaQuote(kind, isin) {
+  const { quote, cnPerformance } = await getJson(`${ONVISTA}/${kind}/ISIN:${isin}/snapshot`);
   return {
-    currency: quote.isoCurrency,
+    currency: kind === 'indices' ? null : quote.isoCurrency,
     current: quote.last,
     updated: Date.parse(quote.datetimeLast),
     w1: cnPerformance.performanceRelW1,
@@ -82,8 +96,7 @@ async function etfQuote() {
 
 function formatPrice(value, currency) {
   return new Intl.NumberFormat('de-DE', {
-    style: 'currency',
-    currency,
+    ...(currency && { style: 'currency', currency }),
     maximumFractionDigits: value >= 1000 ? 0 : 2,
   }).format(value);
 }
