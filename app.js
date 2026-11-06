@@ -4,6 +4,8 @@ const COINGECKO = 'https://api.coingecko.com/api/v3';
 const ONVISTA = 'https://api.onvista.de/api/v1';
 const DAY = 24 * 60 * 60 * 1000;
 const REFRESH_MS = 5 * 60 * 1000;
+// Just under the refresh interval, so reloads reuse cached data but the 5-minute refresh refetches.
+const CACHE_MAX_AGE_MS = 4 * 60 * 1000;
 
 const LOGOS = {
   btc: `<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#f7931a"/>
@@ -51,7 +53,13 @@ const VIEW_LABELS = {
 };
 
 async function getJson(url) {
-  const response = await fetch(url);
+  let response;
+  try {
+    response = await fetch(url);
+  } catch {
+    // A rate limit (HTTP 429) also ends up here: CoinGecko sends it without a CORS header.
+    throw new Error('nicht erreichbar oder Limit erreicht');
+  }
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   return response.json();
 }
@@ -70,8 +78,34 @@ function change(current, past) {
   return past ? (current / past - 1) * 100 : null;
 }
 
+function readCache(key) {
+  try {
+    return JSON.parse(localStorage.getItem(key));
+  } catch {
+    return null;
+  }
+}
+
+function writeCache(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // Storage blocked or full: the data is simply fetched again next time.
+  }
+}
+
+// The CoinGecko public API allows only a few requests per minute, so a few reloads of the page would
+// run into HTTP 429. Responses are kept in localStorage for CACHE_MAX_AGE_MS.
+async function cachedJson(url) {
+  const cached = readCache(url);
+  if (cached && Date.now() - cached.at < CACHE_MAX_AGE_MS) return cached.data;
+  const data = await getJson(url);
+  writeCache(url, { at: Date.now(), data });
+  return data;
+}
+
 async function coinQuote(id, currency) {
-  const { prices } = await getJson(
+  const { prices } = await cachedJson(
     `${COINGECKO}/coins/${id}/market_chart?vs_currency=${currency}&days=365&interval=daily`,
   );
   // Daily points sit at 00:00 UTC; the last point is the live price.

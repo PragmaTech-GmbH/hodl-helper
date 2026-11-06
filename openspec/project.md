@@ -45,7 +45,9 @@ ounce), the Vanguard FTSE All-World UCITS ETF (EUR) and the DAX, S&P 500 and EUR
 ## Important Constraints
 - Must work without a backend and without secrets (repository is public).
 - CoinGecko public API: no key, history limited to the last 365 days, rate limit of a few requests per
-  minute. Keep CoinGecko requests per refresh small (currently 4), refresh no more than every 5 minutes.
+  minute (HTTP 429 after roughly 5 quick requests). Keep CoinGecko requests per refresh small
+  (currently 4), refresh no more than every 5 minutes, and cache responses in `localStorage` for 4 minutes
+  so that reloads do not refetch.
 - onvista's API is undocumented and may change. Its terms restrict content usage; the price-history
   endpoint returns HTTP 403 and must not be used. Only the snapshot endpoint is used. Acceptable for a
   personal dashboard; the page credits onvista and states "Keine Anlageberatung".
