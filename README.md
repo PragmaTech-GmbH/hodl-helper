@@ -1,7 +1,9 @@
 # hodl-helper
 
 Statische, mobil optimierte Seite (Vanilla JS, kein Backend) mit Kursen und Performance.
-Oben wählen fünf Buttons die Ansicht: **Aktuell** (Preis), **Heute** (seit Vortagesschluss), **7 T**, **4 W**, **YTD** (Veränderung in %).
+Oben wählen fünf Buttons den Zeitraum der Veränderung in %: **Heute** (seit Vortagesschluss), **T-1**
+(Vortagesschluss gegenüber dem Schluss davor, also gestern), **7 T**, **4 W**, **YTD**. Der aktuelle Kurs steht
+in jeder Kachel unter der Veränderung.
 
 | Kachel | Quelle | Hinweis |
 |---|---|---|
@@ -14,9 +16,9 @@ Oben wählen fünf Buttons die Ansicht: **Aktuell** (Preis), **Heute** (seit Vor
 Beide APIs senden `Access-Control-Allow-Origin: *`, der Browser ruft sie direkt auf.
 Aktualisierung alle 5 Minuten und beim Zurückkehren in den Tab.
 
-| Aktuell | YTD |
+| Heute | YTD |
 |---|---|
-| ![Aktuell](screenshot-aktuell.png) | ![YTD](screenshot-ytd.png) |
+| ![Heute](screenshot-heute.png) | ![YTD](screenshot-ytd.png) |
 
 ## Lokal starten
 

@@ -36,6 +36,7 @@ ounce), the Vanguard FTSE All-World UCITS ETF (EUR) and the DAX, S&P 500 and EUR
 - "YTD" = change since the last price of the previous calendar year (UTC).
 - "Heute" = change since the previous close (T-1): 00:00 UTC for crypto and token prices, the previous
   trading day's close for the ETF and indices.
+- "T-1" = the previous day's change: previous close (T-1) against the close before it (T-2).
 - "7 T" = 7 days, "4 W" = 4 weeks (28 days).
 - Gold and silver are tracked through gold- and silver-backed tokens (1 token = 1 troy ounce), because
   no free, keyless, CORS-enabled spot metal API with history was found. The token price is within

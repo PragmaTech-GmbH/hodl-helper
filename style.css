@@ -49,6 +49,7 @@ header {
   color: var(--muted);
   font: inherit;
   font-weight: 600;
+  white-space: nowrap;
   cursor: pointer;
 }
 
