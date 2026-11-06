@@ -26,8 +26,13 @@ ounce), the Vanguard FTSE All-World UCITS ETF (EUR) and the DAX, S&P 500 and EUR
 - A failing data source only breaks its own tile (`Promise.allSettled`).
 
 ### Testing Strategy
-- Manual check in a browser at phone size (e.g. Playwright `devices['iPhone 13']`), in all four views.
-- The pure helpers (`priceAt`, `change`) may get small unit tests; no test tooling is required.
+- Playwright tests in `tests/` (own `package.json` with `@playwright/test` as the only dev dependency;
+  the page itself stays free of npm dependencies). They run in Chromium at iPhone 13 size.
+- External APIs are always stubbed (`tests/fixtures.js`); any other request leaving localhost is aborted.
+  The browser clock is pinned to 2026-11-06T12:00Z, so expected values are exact.
+- `helpers.spec.js` calls the pure helpers (`priceAt`, `change`, `formatPrice`, `formatChange`) in the
+  page; `dashboard.spec.js` covers views, error isolation per source and the CoinGecko cache.
+- GitHub Actions runs the suite on every pull request and on pushes to `main`.
 
 ### Git Workflow
 - Feature branches and pull requests against `main`.

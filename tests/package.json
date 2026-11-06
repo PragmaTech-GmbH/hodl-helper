@@ -1,0 +1,11 @@
+{
+  "name": "hodl-helper-tests",
+  "private": true,
+  "description": "Browser tests for the dashboard; the page itself has no npm dependencies.",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.0"
+  }
+}

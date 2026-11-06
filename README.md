@@ -27,6 +27,23 @@ python3 -m http.server 8000
 # http://localhost:8000
 ```
 
+## Tests
+
+Playwright-Tests im Ordner `tests/` (eigene `package.json`, die Seite selbst bleibt ohne npm-Abhängigkeiten).
+CoinGecko und onvista werden mit festen Testdaten gestubbt, die Uhr steht auf dem 06.11.2026, 12:00 UTC;
+die Tests brauchen also kein Netz und liefern immer dieselben Werte. Geprüft werden die Hilfsfunktionen
+(`priceAt`, `change`, Formatierung) und die Seite in iPhone-Größe: Ansichten, Fehler einzelner Quellen,
+Cache bei Reloads.
+
+```sh
+cd tests
+npm ci
+npx playwright install chromium
+npx playwright test
+```
+
+GitHub Actions (`.github/workflows/tests.yml`) führt die Tests bei jedem Pull Request und Push auf `main` aus.
+
 ## Netlify
 
 Site aus diesem Repo anlegen (*Add new site → Import an existing project*), Branch `main`.
